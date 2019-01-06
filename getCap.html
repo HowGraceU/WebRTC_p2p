@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  获取音视频能力
+  <video src="" id="video"></video>
+  <script>
+    var constraints = {
+      audio: true,
+      video: true
+    };
+
+    // var constraints = { // 音频、视频约束
+    //   audio: true, 
+    //   video: constraints1 // 指定请求视频Track
+    // };
+
+    navigator.getUserMedia(constraints, (stream) => {
+      var a = stream.getAudioTracks()[0]
+      console.log('audio capabilities: ' + JSON.stringify(a.getCapabilities(), null, 2))
+      var v = stream.getVideoTracks()[0]
+      console.log('video capabilities: ' + JSON.stringify(v.getCapabilities(), null, 2))
+
+      //设置约束
+      var constraints1 = {
+        "aspectRatio": 1.7777777777777777, //16:9
+        // "deviceId": "2b63a334255495e3f1511536bb70d70120cf639fb9c1e646af1627fac0de6d3a",
+        // "frameRate": 30.000030517578125,
+        // "height": 720,
+        "width": 1280
+      }
+
+      var constraints2 = {
+        mandatory: {
+          aspectRatio: 1.7777777777777777
+        },
+        optional: [{
+          width: {
+            min: 1200
+          }
+        }, {
+          height: {
+            max: 1000
+          }
+        }]
+      }
+
+      v.applyConstraints(constraints1).then(() => {
+        console.log('video setting: ' + JSON.stringify(v.getSettings(), null, 2))
+      }, (error) => {
+        console.log('applyConstraints error: ', error);
+      })
+
+      video.srcObject = stream;
+      video.onloadedmetadata = function (e) {
+        video.play();
+      }
+    }, (error) => {
+      console.log('navigator.getUserMedia error: ', error);
+    });
+  </script>
+</body>
+
+</html>

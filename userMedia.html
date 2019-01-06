@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  获取本地流
+  <video id="video" src=""></video>
+  <script>
+    'use strict';
+
+    navigator.getUserMedia = navigator.getUserMedia ||
+      navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+    var constraints = { // 音频、视频约束
+      audio: true, // 指定请求音频Track
+      video: {
+        width: 1280,
+        height: 720
+      }
+    };
+
+    // function successCallback(stream) {
+    //   video.srcObject = stream;
+    //   video.onloadedmetadata = function (e) {
+    //     video.play();
+    //   };
+    //   // if (HTMLMediaElement.srcObject) {
+    //   //   video.src = HTMLMediaElement.srcObject(stream);
+    //   // } else {
+    //   //   video.src = stream;
+    //   // }
+    // }
+
+    // function errorCallback(error) {
+    //   console.log('navigator.getUserMedia error: ', error);
+    // }
+
+    navigator.getUserMedia(constraints, (stream) => {
+      console.log('audio track:' + stream.getAudioTracks().length)
+      console.log('video track:' + stream.getVideoTracks().length)
+      video.srcObject = stream;
+      video.onloadedmetadata = function (e) {
+        video.play();
+      }
+    }, (error) => {
+      console.log('navigator.getUserMedia error: ', error);
+    });
+  </script>
+</body>
+
+</html>
